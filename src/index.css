@@ -1,13 +1,252 @@
+* {
+  box-sizing: border-box;
+}
 body {
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app {
+  height: 100vh;
+  width: 100vw;
+  background: #f1f1f1;
+  margin: 0;
+  padding: 0;
 }
+
+/* start the Navbar component*/
+
+.nav {
+  padding: 0.8rem 0;
+  background: #032b33;
+  display: flex;
+  justify-content: space-between;
+}
+.nav ul {
+  margin: 0 2rem;
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+.nav ul li a {
+  text-decoration: none;
+  color: #a1a0a0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+.nav ul li .active {
+  color: #fff;
+}
+.nav ul li a:hover {
+  color: #fff;
+}
+
+/*end the Navbar component*/
+
+/* start the Welcome Component*/
+
+.welcome {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 80vh;
+}
+
+.info {
+  width: 50vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: cursive;
+  color: #032b33;
+}
+.info h1 {
+  font-size: 3rem;
+}
+.info h2 {
+  font-size: 2rem;
+  margin-left: -20%;
+}
+.info h3 {
+  font-size: 1.5rem;
+}
+.welcome img {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+}
+
+/*end the Welcome component*/
+
+/*start the Error component*/
+.error {
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+}
+.error h1 {
+  font-family: cursive;
+  font-size: 5rem;
+  text-align: center;
+  color: #d22828;
+  width: 50vw;
+  text-transform: capitalize;
+}
+/*end the Error componet*/
+
+/*start the main*/
+.inputData {
+  width: 90vw;
+  height: 35vh;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: space-around;
+}
+/*end the main*/
+
+/*start setData*/
+.set-data {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.set-data .table {
+  position: relative;
+}
+.set-data .table .over {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.set-data .table .row input {
+  text-align: center;
+  color: #032b33;
+  outline: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-transform: capitalize;
+  border: 0.5px solid #6472756e;
+  height: 2rem;
+}
+.set-data .table .row .bg {
+  background-color: lightgreen;
+  height: 2.5rem;
+}
+.set-data .table .row .bg2 {
+  background-color: lightcoral;
+}
+.set-data button,
+.start button,
+.simulation_error button,
+.sim button {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  background: #032b33;
+  border: none;
+  color: #f1f1f1;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  outline: none;
+  margin-top: 1rem;
+  border-radius: 0.2rem;
+}
+.set-data button:hover,
+.start button:hover,
+.sim button:hover,
+.simulation_error button:hover {
+  background: #063a44;
+}
+.set-data .table .row .err {
+  background: #ff00003b;
+}
+
+/*end set data*/
+
+/*start display*/
+.display {
+  width: 30%;
+  height: 70%;
+  color: #032b33;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: capitalize;
+}
+/*end display*/
+
+/*start the simulation*/
+.start {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.start .buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 23%;
+}
+.start button {
+  background-color: #032b33;
+}
+.simulation_error {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.simulation_error h1 {
+  font-family: cursive;
+  color: #d22828;
+  width: 50%;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+.sim {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+/*end the simulation*/
+
+/*start the figure*/
+.figure {
+  display: flex;
+}
+.figure .row div {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #032b33;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 17px;
+}
+.figure .row .bo {
+  border: 0.2px solid #6472756e;
+}
+.figure .row .r {
+  background-color: rgb(236, 62, 62);
+}
+.figure .row .g {
+  background-color: rgb(53, 212, 53);
+}
+
+.figure .row .b {
+  background-color: rgb(92, 167, 192);
+}
+
+/*end the figure*/
