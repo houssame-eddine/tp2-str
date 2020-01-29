@@ -4,6 +4,8 @@
 body {
   padding: 0;
   margin: 0;
+  width: auto;
+  background: #f1f1f1;
 }
 
 .app {
@@ -217,12 +219,19 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow: scroll;
+}
+.sim button {
+  position: fixed;
+  left: 49vw;
+  top: 85vh;
 }
 /*end the simulation*/
 
 /*start the figure*/
 .figure {
   display: flex;
+  width: 100%;
 }
 .figure .row div {
   width: 30px;

@@ -29,6 +29,17 @@ const calcU = (p, e) => {
   return u.toFixed(3);
 };
 
+// draw
+const draw = (length, color) => {
+  let a = [];
+  for (let i = 0; i < length; i++) {
+    if (color === 0) a.push(['r', '', '']);
+    if (color === 1) a.push(['', 'g', '']);
+    if (color === 2) a.push(['', '', 'b']);
+  }
+  return a;
+};
+
 //Rm algo
 const setTheAlgo = (algo, p, e, lcm) => {
   const array = [];
@@ -111,48 +122,113 @@ const setTheAlgo = (algo, p, e, lcm) => {
     return [];
   }
   if (algo === 'pr') {
-    for (let i = 0; i < lcm / p[order[2]]; i++) {
-      for (let j = 0; j < e[order[2]]; j++) {
-        if (order[2] === 0)
-          array[i * p[order[2]] + j + e[order[0]] + e[order[1]]] = [
-            'r',
-            '',
-            ''
-          ];
-        else if (order[2] === 1)
-          array[i * p[order[2]] + j + e[order[0]] + e[order[1]]] = [
-            '',
-            'g',
-            ''
-          ];
-        else if (order[2] === 2)
-          array[i * p[order[2]] + j + e[order[0]] + e[order[1]]] = [
-            '',
-            '',
-            'b'
-          ];
-      }
-    }
-    for (let i = 0; i < lcm / p[order[1]]; i++) {
-      for (let j = 0; j < e[order[1]]; j++) {
-        if (order[1] === 0)
-          array[i * p[order[1]] + j + e[order[0]]] = ['r', '', ''];
-        else if (order[1] === 1)
-          array[i * p[order[1]] + j + e[order[0]]] = ['', 'g', ''];
-        else if (order[1] === 2)
-          array[i * p[order[1]] + j + e[order[0]]] = ['', '', 'b'];
-      }
-    }
+    let secondRemaining;
+    let thirdRemaining;
+    //first
     for (let i = 0; i < lcm / p[order[0]]; i++) {
       for (let j = 0; j < e[order[0]]; j++) {
-        if (order[0] === 0) array[i * p[order[0]] + j] = ['r', '', ''];
+        let index = i * p[order[0]] + j;
+
+        if (order[0] === 0) array[index] = ['r', '', ''];
         else if (order[0] === 1) {
-          array[i * p[order[0]] + j] = ['', 'g', ''];
-        } else if (order[0] === 2) array[i * p[order[0]] + j] = ['', '', 'b'];
+          array[index] = ['', 'g', ''];
+        } else if (order[0] === 2) array[index] = ['', '', 'b'];
+      }
+    }
+    //second
+    for (let i = 0; i < lcm / p[order[1]]; i++) {
+      let j = 0;
+      secondRemaining = e[order[1]];
+      while (secondRemaining) {
+        if (
+          array[i * p[order[1]] + j][0] === '' &&
+          array[i * p[order[1]] + j][1] === '' &&
+          array[i * p[order[1]] + j][2] === ''
+        ) {
+          if (order[1] === 0) array[i * p[order[1]] + j] = ['r', '', ''];
+          else if (order[1] === 1) array[i * p[order[1]] + j] = ['', 'g', ''];
+          else if (order[1] === 2) array[i * p[order[1]] + j] = ['', '', 'b'];
+          secondRemaining = secondRemaining - 1;
+        }
+        j++;
+      }
+    }
+    //third
+    for (let i = 0; i < lcm / p[order[2]]; i++) {
+      let j = 0;
+      thirdRemaining = e[order[2]];
+      while (thirdRemaining) {
+        if (
+          array[i * p[order[2]] + j][0] === '' &&
+          array[i * p[order[2]] + j][1] === '' &&
+          array[i * p[order[2]] + j][2] === ''
+        ) {
+          if (order[2] === 0) array[i * p[order[2]] + j] = ['r', '', ''];
+          else if (order[2] === 1) array[i * p[order[2]] + j] = ['', 'g', ''];
+          else if (order[2] === 2) array[i * p[order[2]] + j] = ['', '', 'b'];
+          thirdRemaining = thirdRemaining - 1;
+        }
+        j++;
       }
     }
   }
+
   if (algo === 'npr') {
+    let manyFirst = lcm / p[order[0]];
+    let manySecond = lcm / p[order[1]];
+    let manyThird = lcm / p[order[2]];
+    let p1 = [];
+    let p2 = [];
+    let p3 = [];
+    for (let i = 0; i < manyFirst; i++) {
+      p1.push({ val: i * p[order[0]], order: 0, e: e[order[0]] });
+    }
+    for (let i = 0; i < manySecond; i++) {
+      p2.push({ val: i * p[order[1]], order: 1, e: e[order[1]] });
+    }
+    for (let i = 0; i < manyThird; i++) {
+      p3.push({ val: i * p[order[2]], order: 2, e: e[order[2]] });
+    }
+    let pi = [...p1, ...p2, ...p3].sort(function(a, b) {
+      return a.val - b.val;
+    });
+    let or = pi.map(v => v.order);
+    let pr = pi.map(v => v.val);
+    let ei = pi.map(v => v.e);
+    let sl = ei.map(v => '');
+    for (let i = 0; i < or.length; i++) {
+      if (i === 0) {
+        sl[i] = 0;
+      } else {
+        sl[i] = sl[i - 1] + ei[i - 1] > pr[i] ? sl[i - 1] + ei[i - 1] : pr[i];
+      }
+      if (i === or.length - 1) {
+        sl.push(sl[i] + ei[i]);
+      }
+    }
+    for (let i = 1; i <= or.length; i++) {
+      if (sl[i] - sl[i - 1] === sl[i + 1] - sl[i]) {
+        sl.splice(i, 1);
+        or.splice(i, 1);
+        pr.splice(i, 1);
+        ei.splice(i, 1);
+        for (let i = 0; i < or.length; i++) {
+          if (i === 0) {
+            sl[i] = 0;
+          } else {
+            sl[i] =
+              sl[i - 1] + ei[i - 1] > pr[i] ? sl[i - 1] + ei[i - 1] : pr[i];
+          }
+        }
+      }
+    }
+    or.forEach((o, i) => {
+      array.splice(sl[i], sl[i + 1] - sl[i], ...draw(e[order[o]], order[o]));
+    });
+    let rec = array.length;
+    for (let i = 0; i < lcm - rec; i++) {
+      array.push(['', '', '']);
+    }
   }
   return array;
 };
