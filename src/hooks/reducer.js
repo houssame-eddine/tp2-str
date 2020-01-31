@@ -121,6 +121,8 @@ const setTheAlgo = (algo, p, e, lcm) => {
   if (impo) {
     return [];
   }
+
+  //preemeptif
   if (algo === 'pr') {
     let secondRemaining;
     let thirdRemaining;
@@ -172,67 +174,123 @@ const setTheAlgo = (algo, p, e, lcm) => {
       }
     }
   }
+  // non preemptif
 
   if (algo === 'npr') {
-    let manyFirst = lcm / p[order[0]];
-    let manySecond = lcm / p[order[1]];
-    let manyThird = lcm / p[order[2]];
     let p1 = [];
     let p2 = [];
     let p3 = [];
-    for (let i = 0; i < manyFirst; i++) {
-      p1.push({ val: i * p[order[0]], order: 0, e: e[order[0]] });
+    let pi;
+    for (let i = 0; i < lcm / p[order[0]]; i++) {
+      p1.push(i * p[order[0]]);
     }
-    for (let i = 0; i < manySecond; i++) {
-      p2.push({ val: i * p[order[1]], order: 1, e: e[order[1]] });
+    for (let i = 0; i < lcm / p[order[1]]; i++) {
+      p2.push(i * p[order[1]]);
     }
-    for (let i = 0; i < manyThird; i++) {
-      p3.push({ val: i * p[order[2]], order: 2, e: e[order[2]] });
+    for (let i = 0; i < lcm / p[order[2]]; i++) {
+      p3.push(i * p[order[2]]);
     }
-    let pi = [...p1, ...p2, ...p3].sort(function(a, b) {
-      return a.val - b.val;
+    pi = [...p1, ...p2, ...p3].sort(function(a, b) {
+      return a - b;
     });
-    let or = pi.map(v => v.order);
-    let pr = pi.map(v => v.val);
-    let ei = pi.map(v => v.e);
-    let sl = ei.map(v => '');
-    for (let i = 0; i < or.length; i++) {
-      if (i === 0) {
-        sl[i] = 0;
-      } else {
-        sl[i] = sl[i - 1] + ei[i - 1] > pr[i] ? sl[i - 1] + ei[i - 1] : pr[i];
+    let a, b, c;
+    let many = 1;
+    pi.forEach((oi, i) => {
+      if (i) {
+        if (pi[i] !== pi[i - 1]) {
+          a = false;
+          b = false;
+          c = false;
+          many = 1;
+        } else many++;
       }
-      if (i === or.length - 1) {
-        sl.push(sl[i] + ei[i]);
-      }
-    }
-    for (let i = 1; i <= or.length; i++) {
-      if (sl[i] - sl[i - 1] === sl[i + 1] - sl[i]) {
-        sl.splice(i, 1);
-        or.splice(i, 1);
-        pr.splice(i, 1);
-        ei.splice(i, 1);
-        for (let i = 0; i < or.length; i++) {
-          if (i === 0) {
-            sl[i] = 0;
-          } else {
-            sl[i] =
-              sl[i - 1] + ei[i - 1] > pr[i] ? sl[i - 1] + ei[i - 1] : pr[i];
+      //first
+      if (p1.find(o => o === oi) !== undefined && (!a || many === 1)) {
+        let isEmpty;
+        let j = 0;
+        a = true;
+        while (!isEmpty) {
+          if (
+            array[oi + j][0] === '' &&
+            array[oi + j][1] === '' &&
+            array[oi + j][2] === ''
+          ) {
+            isEmpty = true;
+            for (let m = 0; m < e[order[0]]; m++) {
+              if (j < p[order[0]]) {
+                let index = oi + j + m;
+                if (order[0] === 0) array[index] = ['r', '', ''];
+                else if (order[0] === 1) {
+                  array[index] = ['', 'g', ''];
+                } else if (order[0] === 2) array[index] = ['', '', 'b'];
+              }
+            }
           }
+          j++;
         }
       }
-    }
-    or.forEach((o, i) => {
-      array.splice(sl[i], sl[i + 1] - sl[i], ...draw(e[order[o]], order[o]));
+
+      //second
+      if (p2.find(o => o === oi) !== undefined && ((!b && !a) || many === 2)) {
+        b = true;
+        let isEmpty;
+        let j = 0;
+        while (!isEmpty) {
+          if (
+            array[oi + j][0] === '' &&
+            array[oi + j][1] === '' &&
+            array[oi + j][2] === ''
+          ) {
+            isEmpty = true;
+            for (let m = 0; m < e[order[1]]; m++) {
+              if (j < p[order[1]]) {
+                let index = oi + j + m;
+                if (order[1] === 0) array[index] = ['r', '', ''];
+                else if (order[1] === 1) {
+                  array[index] = ['', 'g', ''];
+                } else if (order[1] === 2) array[index] = ['', '', 'b'];
+              }
+            }
+          }
+          j++;
+        }
+      }
+
+      //third
+      if (
+        p3.find(o => o === oi) !== undefined &&
+        ((!c && !a && !b) || many === 3 || ((a || b) && many === 2 && !(a * b)))
+      ) {
+        console.log(oi);
+        c = true;
+        let isEmpty;
+        let j = 0;
+        while (!isEmpty) {
+          if (
+            array[oi + j][0] === '' &&
+            array[oi + j][1] === '' &&
+            array[oi + j][2] === ''
+          ) {
+            isEmpty = true;
+            for (let m = 0; m < e[order[2]]; m++) {
+              if (j < p[order[2]]) {
+                let index = oi + j + m;
+                if (order[2] === 0) array[index] = ['r', '', ''];
+                else if (order[2] === 1) {
+                  array[index] = ['', 'g', ''];
+                } else if (order[2] === 2) array[index] = ['', '', 'b'];
+              }
+            }
+          }
+          j++;
+        }
+      }
     });
-    let rec = array.length;
-    for (let i = 0; i < lcm - rec; i++) {
-      array.push(['', '', '']);
-    }
   }
   return array;
 };
 
+// reducer function
 export default (state, { type, payload }) => {
   switch (type) {
     case PREPAR_FOR_THE_SIMULATION:
